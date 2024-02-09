@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <map>
+
+class SimpleChatBot {
+public:
+    SimpleChatBot() {
+        // Initialize chatbot responses
+        responses = {
+            {"hi", "Hello! How can I help you?"},
+            {"how are you", "I'm just a computer program, so I don't have feelings, but I'm here to assist you!"},
+            {"bye", "Goodbye! Have a great day!"},
+            {"thanks", "You're welcome!"},
+            {"default", "I'm sorry, I didn't understand that. Can you please rephrase?"},
+        };
+    }
+
+    void chat() {
+        std::string input;
+        std::cout << "Hello! How can I assist you today?" << std::endl;
+
+        while (true) {
+            std::cout << "You: ";
+            std::getline(std::cin, input);
+
+            // Convert input to lowercase for case-insensitive matching
+            std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+
+            // Check if input matches any predefined responses
+            std::string response = getResponse(input);
+
+            std::cout << "Bot: " << response << std::endl;
+
+            // Exit loop if user says 'bye'
+            if (input == "bye") {
+                break;
+            }
+        }
+    }
+
+private:
+    std::map<std::string, std::string> responses;
+
+    std::string getResponse(const std::string& input) {
+        // Check if input matches any predefined responses
+        for (const auto& pair : responses) {
+            if (input.find(pair.first) != std::string::npos) {
+                return pair.second;
+            }
+        }
+        // If no predefined response matches, return default response
+        return responses["default"];
+    }
+};
+
+int main() {
+    SimpleChatBot chatbot;
+    chatbot.chat();
+    return 0;
+}
